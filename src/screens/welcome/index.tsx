@@ -1,7 +1,7 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import BottomBasic from '@src/ui/bottom';
-import SwitchTheme from '@src/components/switch-theme.tsx';
+import SwitchTheme from '@src/components/switch-theme';
 import {useTheme} from '@react-navigation/native';
 
 const WelcomeScreen = ({navigation}: {navigation: any}) => {

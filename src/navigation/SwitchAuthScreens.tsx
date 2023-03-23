@@ -4,17 +4,17 @@ import PublicRoutes from './PublicRoutes';
 import {NavigationContainer} from '@react-navigation/native';
 import {useThemeColorContext} from '@src/context/ThemeColorContext';
 import {CustomDarkTheme, CustomLightTheme} from '@src/theme';
-
-const loggedState = 'LOGGED_IN';
+import {useAuthContext} from '@src/context/AuthContext';
 
 const SwitchAuthScreens = () => {
   const {mode} = useThemeColorContext();
+  const {loggedState} = useAuthContext();
 
   return (
     <NavigationContainer
       theme={mode === 'dark' ? CustomDarkTheme : CustomLightTheme}>
-      {/* {loggedState === 'LOGGED_IN' && <PrivateRoutes />} */}
-      {loggedState === 'LOGGED_IN' && <PublicRoutes />}
+      {loggedState.userToken && <PrivateRoutes />}
+      {loggedState.isSignout && <PublicRoutes />}
     </NavigationContainer>
   );
 };

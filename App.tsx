@@ -1,11 +1,14 @@
 import React from 'react';
 import SwitchAuthScreens from '@src/navigation/SwitchAuthScreens';
 import ThemeColorProvider from '@src/context/ThemeColorContext';
+import {AuthContextProvider} from '@src/context/AuthContext';
 
 const App = () => {
   return (
     <ThemeColorProvider>
-      <SwitchAuthScreens />
+      <AuthContextProvider>
+        <SwitchAuthScreens />
+      </AuthContextProvider>
     </ThemeColorProvider>
   );
 };
