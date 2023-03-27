@@ -1,4 +1,5 @@
 import storage from '@src/services/storage';
+import {BACKEND_URL} from '../../backend-url';
 import React, {
   createContext,
   useContext,
@@ -27,10 +28,10 @@ type AuthContextProps = {
   loggedState: {
     isSignout: boolean;
     userToken: string | null;
+    isLoading: boolean | null;
   };
   userData: UserDataProps | null;
 };
-const BACKEND_URL = 'http://192.168.2.154:3000/api';
 
 const AuthContext = createContext<AuthContextProps>({
   signIn: () => {},
@@ -39,6 +40,7 @@ const AuthContext = createContext<AuthContextProps>({
   loggedState: {
     isSignout: false,
     userToken: null,
+    isLoading: true,
   },
   userData: null,
 });
@@ -55,6 +57,7 @@ const reducer = (prevState: any, action: any) => {
       return {
         ...prevState,
         isSignout: false,
+        isLoading: false,
         userToken: action.token,
       };
     case 'SIGN_OUT':
@@ -76,23 +79,21 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
   });
   const [user, setUser] = useState();
   useEffect(() => {
-    // Fetch the token from storage then navigate to our appropriate place
     const bootstrapAsync = async () => {
-      let userToken;
+      // let userToken;
 
       try {
+        let userToken = await storage.get('userToken');
         if (userToken) {
-          userToken = await storage.get('userToken');
           const res = await fetch(`${BACKEND_URL}/user/me`, {
             method: 'GET',
             headers: {
-              // 'Content-Type': 'application/json',
               Authorization: `Bearer ${userToken}`,
             },
           });
           const data = await res.json();
-
           setUser(data);
+          dispatch({type: 'SIGN_IN', token: userToken});
         } else {
           dispatch({type: 'SIGN_OUT'});
         }
@@ -100,7 +101,7 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
         // Restoring token failed
       }
 
-      dispatch({type: 'RESTORE_TOKEN', token: userToken});
+      // dispatch({type: 'RESTORE_TOKEN', token: userToken});
     };
 
     bootstrapAsync();
@@ -119,7 +120,14 @@ export const AuthContextProvider: React.FC<{children: React.ReactNode}> = ({
           });
 
           const data = await res.json();
-          console.log(data);
+          if (data.payload.authCookie) {
+            const token = data.payload.authCookie;
+            storage.save('userToken', token);
+            dispatch({type: 'SIGN_IN', token});
+          } else {
+            dispatch({type: 'SIGN_OUT'});
+          }
+
           // .then(res => res.json())
           // .then(data => {
           //   console.log('dataaaa', data);

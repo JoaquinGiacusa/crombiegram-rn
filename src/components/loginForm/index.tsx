@@ -30,7 +30,7 @@ const LoginForm = () => {
         signIn({email: values.email, password: values.password});
       }}
       validationSchema={validationSchema}>
-      {({handleChange, handleBlur, handleSubmit, values, errors}) => (
+      {({handleChange, handleBlur, handleSubmit, values, errors, touched}) => (
         <View style={styles.container}>
           <InputBasic
             value={values.email}
@@ -38,7 +38,7 @@ const LoginForm = () => {
             onBlur={handleBlur('email')}
             label="Email"
             placeHolder="example@mail.com"
-            errorMsj={errors.email || ''}
+            errorMsj={(touched.email && errors.email) || ''}
           />
 
           <InputBasic
@@ -47,7 +47,8 @@ const LoginForm = () => {
             onBlur={handleBlur('password')}
             label="Password"
             placeHolder=""
-            errorMsj={errors.password || ''}
+            errorMsj={(touched.password && errors.password) || ''}
+            secureTextEntry
           />
           <BottomBasic text="Login" onPress={handleSubmit} />
         </View>

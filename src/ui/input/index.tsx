@@ -11,6 +11,7 @@ type InputBasicType = {
   onBlur?: any;
   value: any;
   errorMsj: string;
+  secureTextEntry?: true | undefined;
 };
 
 const InputBasic: React.FC<InputBasicType> = ({
@@ -33,7 +34,6 @@ const InputBasic: React.FC<InputBasicType> = ({
         style={[
           styles.input,
           {color: colors.text},
-
           {backgroundColor: colors.border},
           {shadowColor: colors.text},
         ]}

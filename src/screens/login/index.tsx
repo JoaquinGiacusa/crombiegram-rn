@@ -3,16 +3,21 @@ import React from 'react';
 import LoginForm from '@src/components/loginForm';
 import {useTheme} from '@react-navigation/native';
 import SwitchTheme from '@src/components/switch-theme';
+import {useKeyboardVisible} from '@src/hooks/useKeyboardVisible';
 
 const LoginScreen = () => {
   const {colors} = useTheme();
+
+  const {isKeyboardVisible} = useKeyboardVisible();
   return (
     <View style={styles.container}>
       <Text style={[styles.title, {color: colors.text}]}>Login</Text>
       <LoginForm />
-      <View style={styles.switchContainer}>
-        <SwitchTheme />
-      </View>
+      {!isKeyboardVisible && (
+        <View style={styles.switchContainer}>
+          <SwitchTheme />
+        </View>
+      )}
     </View>
   );
 };
