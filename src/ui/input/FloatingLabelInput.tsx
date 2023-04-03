@@ -20,7 +20,7 @@ const FloatingLabelInput: React.FC<{
     left: 10,
     top: animatedIsFocused.interpolate({
       inputRange: [0, 1],
-      outputRange: [11, -18],
+      outputRange: [11, -21],
     }),
     fontSize: animatedIsFocused.interpolate({
       inputRange: [0, 1],
@@ -39,8 +39,9 @@ const FloatingLabelInput: React.FC<{
       useNativeDriver: false,
     }).start();
   }, [isFocused, animatedIsFocused, props.value]);
+
   return (
-    <View style={{width: '100%'}}>
+    <View>
       <Animated.Text style={labelStyle}>{label}</Animated.Text>
       <TextInput
         {...props}
@@ -63,16 +64,11 @@ export default FloatingLabelInput;
 const styles = StyleSheet.create({
   input: {
     width: '100%',
-    // height: 26,
     fontSize: 20,
     color: '#000',
-    // borderBottomWidth: 1,
-    // borderBottomColor: '#555',
-
     borderRadius: 8,
-    paddingStart: 20,
+    paddingStart: 10,
     borderColor: '#141414',
-
     fontFamily: 'Poppins-Regular',
     paddingTop: 2,
     paddingBottom: 0,
